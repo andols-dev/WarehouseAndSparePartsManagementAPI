@@ -1,6 +1,7 @@
 package org.example.warehouseandsparepartsmanagementapi.user;
 
 import jakarta.persistence.*;
+import org.example.warehouseandsparepartsmanagementapi.role.Role;
 
 @Entity
 @Table(name = "users")
@@ -8,6 +9,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -18,7 +23,7 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -79,5 +84,13 @@ public class User {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
