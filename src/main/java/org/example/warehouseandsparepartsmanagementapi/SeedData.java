@@ -12,9 +12,9 @@ import java.util.Optional;
 @Component
 public class SeedData implements CommandLineRunner {
 
-    private RoleRepository roleRepository;
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     public SeedData(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
@@ -32,11 +32,18 @@ public class SeedData implements CommandLineRunner {
         }
 
         Optional<Role> userAdministrator = roleRepository.findByRole(UserRole.USER_ADMINISTRATOR);
+        Optional<Role> warehouseOperator = roleRepository.findByRole(UserRole.WAREHOUSE_OPERATOR);
+        Optional<Role> operationCoordinator = roleRepository.findByRole(UserRole.OPERATION_COORDINATOR);
+
 
         Role userAdministratorRole = userAdministrator.orElseThrow();
+        Role warehouseOperatorRole = warehouseOperator.orElseThrow();
+        Role operationCoordinatorRole = operationCoordinator.orElseThrow();
 
+
+        // passwords are for testing purposes only
         Optional<User> existingAdmin = userRepository.findByEmail("admin@example.com");
-
+        // TODO: Change password settings
         if (!existingAdmin.isPresent()) {
             User admin = new User();
             admin.setUsername("admin");
@@ -48,5 +55,32 @@ public class SeedData implements CommandLineRunner {
             admin.setRole(userAdministratorRole);
             userRepository.save(admin);
         }
+
+        Optional<User> existingWarehouseOperator = userRepository.findByEmail("warehouseoperator@example.com");
+        if (!existingWarehouseOperator.isPresent()) {
+            User operator = new User();
+            operator.setUsername("warehouseoperator");
+            operator.setPassword(passwordEncoder.encode("warehouseoperator"));
+            operator.setFirstName("Lisa");
+            operator.setLastName("Olsson");
+            operator.setEmail("warehouseoperator@example.com");
+            operator.setActive(true);
+            operator.setRole(warehouseOperatorRole);
+            userRepository.save(operator);
+        }
+
+        Optional<User> existingOperationCoordinator = userRepository.findByEmail("operationcoordinator@example.com");
+        if (!existingOperationCoordinator.isPresent()) {
+            User coordinator = new User();
+            coordinator.setUsername("operationcoordinator");
+            coordinator.setPassword(passwordEncoder.encode("operationcoordinator"));
+            coordinator.setFirstName("David");
+            coordinator.setLastName("Nilsson");
+            coordinator.setEmail("operationcoordinator@example.com");
+            coordinator.setActive(true);
+            coordinator.setRole(operationCoordinatorRole);
+            userRepository.save(coordinator);
+        }
+
     }
 }
