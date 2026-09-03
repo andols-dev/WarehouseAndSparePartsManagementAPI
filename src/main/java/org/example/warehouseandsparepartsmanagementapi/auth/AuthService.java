@@ -19,7 +19,7 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public String login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
@@ -35,9 +35,12 @@ public class AuthService {
                 .next()
                 .getAuthority();
 
-        return jwtService.generateToken(
-                authentication.getName(),
-                role.replace("ROLE_", "")
+        return new LoginResponse(
+                jwtService.generateToken(
+                        authentication.getName(),
+                        role.replace("ROLE_", "")
+                ),
+                "Bearer"
         );
     }
 }
