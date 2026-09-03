@@ -1,8 +1,14 @@
 # Warehouse & Spare Parts Management API
 ## A Java and Spring Boot REST API currently under development for managing internal spare parts orders, inventory, and order workflows.
 
-## Current focus
-Implementing login and logout functionality
+## Current status
+
+Authentication and authorization are implemented.
+
+Currently implemented:
+- User authentication
+- JWT-based authentication
+- Role-based authorization
 
 ## Tech stack
 - Java 26
