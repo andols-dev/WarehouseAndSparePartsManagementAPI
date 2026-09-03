@@ -41,7 +41,8 @@ public class SeedData implements CommandLineRunner {
         Role operationCoordinatorRole = operationCoordinator.orElseThrow();
 
 
-        // passwords are for testing purposes only
+        // Demo credentials for local development/testing only.
+        // These passwords must not be reused in production.
         Optional<User> existingAdmin = userRepository.findByEmail("admin@example.com");
         // TODO: Change password settings
         if (!existingAdmin.isPresent()) {
